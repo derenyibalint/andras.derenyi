@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Derényi András | András Derényi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1a1a;
+    --muted: #5c5c5c;
+    --rule: #c8c0b0;
+    --bg: #f8f6f1;
+    --accent: #2b4a6b;
+    --accent-light: #e8eef5;
+    --white: #ffffff;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── LANG TOGGLE ── */
+  .lang-bar {
+    position: fixed;
+    top: 0; right: 0; left: 0;
+    z-index: 100;
+    background: var(--white);
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 48px;
+  }
+  .lang-bar .site-title {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+  .lang-toggle {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .lang-toggle button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px 14px;
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    transition: background 0.2s, color 0.2s;
+  }
+  .lang-toggle button + button { border-left: 1px solid var(--rule); }
+  .lang-toggle button.active {
+    background: var(--accent);
+    color: var(--white);
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 48px; right: 0; left: 0;
+    z-index: 99;
+    background: var(--white);
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    padding: 0 2rem;
+    height: 44px;
+    align-items: center;
+  }
+  nav a {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--accent); }
+
+  /* ── MAIN LAYOUT ── */
+  main { padding-top: 92px; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 88vh;
+    border-bottom: 1px solid var(--rule);
+    overflow: hidden;
+  }
+  .hero-books {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 6rem 6rem 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 860px;
+  }
+  .hero-eyebrow {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+  .hero-name {
+    font-family: var(--serif);
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 2rem;
+  }
+  .hero-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--accent);
+    margin-bottom: 2rem;
+  }
+  .hero-bio {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: #3a3a3a;
+    max-width: 580px;
+  }
+  .hero-bio p + p { margin-top: 1em; }
+
+  /* ── SECTIONS ── */
+  section {
+    border-bottom: 1px solid var(--rule);
+    padding: 5rem 5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+  .section-label {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 400;
+    color: var(--ink);
+  }
+
+  /* ── EXPERT WORKS ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+  .two-col p {
+    font-size: 0.9rem;
+    line-height: 1.85;
+    color: #3a3a3a;
+  }
+
+  /* ── PARTNERS ── */
+  .partners-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    max-width: 760px;
+  }
+  .partners-list li {
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #3a3a3a;
+  }
+  .partners-list li::before {
+    content: "—";
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 0.05em;
+  }
+
+  /* ── FURTHER ACTIVITIES ── */
+  /* reuses .two-col */
+
+  /* ── CONTACT ── */
+  .contact-section {
+    padding: 5rem;
+    text-align: center;
+    background: var(--accent);
+    border-bottom: none;
+    max-width: 100%;
+  }
+  .contact-section .section-label { color: rgba(255,255,255,0.6); }
+  .contact-section .section-title { color: var(--white); }
+  .contact-section .section-header { justify-content: center; }
+  .contact-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: rgba(255,255,255,0.9);
+    font-size: 1rem;
+    font-family: var(--serif);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+  .contact-item:hover { color: var(--white); text-decoration: underline; }
+  .contact-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+  }
+
+  /* ── LANG CONTENT ── */
+  [lang-content] { display: none; }
+  body.lang-hu [lang-content="hu"] { display: block; }
+  body.lang-en [lang-content="en"] { display: block; }
+  body.lang-hu .nav-hu { display: block; }
+  body.lang-en .nav-en { display: block; }
+  .nav-hu, .nav-en { display: none; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 1.8rem;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    background: var(--white);
+    border-top: 1px solid var(--rule);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 800px) {
+    .hero { min-height: auto; }
+    .hero-content { padding: 3rem 2rem; }
+    section { padding: 3.5rem 2rem; }
+    .two-col { grid-template-columns: 1fr; gap: 2rem; }
+    .contact-section { padding: 3.5rem 2rem; }
+    nav { gap: 1.2rem; flex-wrap: wrap; height: auto; padding: 10px 1rem; top: 48px; }
+    main { padding-top: 110px; }
+  }
+</style>
+</head>
+<body class="lang-hu">
+
+<!-- LANG BAR -->
+<div class="lang-bar">
+  <span class="site-title">Derényi András</span>
+  <div class="lang-toggle">
+    <button id="btn-hu" class="active" onclick="setLang('hu')">HU</button>
+    <button id="btn-en" onclick="setLang('en')">EN</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-hu" lang-content="hu">
+    <a href="#bemutatkozas">Bemutatkozás</a>
+    <a href="#szakmai">Szakmai tevékenység</a>
+    <a href="#partnerek">Partnerek</a>
+    <a href="#egyeb">Egyéb tevékenységek</a>
+    <a href="#kapcsolat">Kapcsolat</a>
+  </span>
+  <span class="nav-en" lang-content="en">
+    <a href="#bemutatkozas">About</a>
+    <a href="#szakmai">Expert Works</a>
+    <a href="#partnerek">Partners</a>
+    <a href="#egyeb">Further Activities</a>
+    <a href="#kapcsolat">Contact</a>
+  </span>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <div class="hero" id="bemutatkozas">
+    <!-- Subtle diagonal line pattern -->
+    <svg class="hero-books" viewBox="0 0 80 80" preserveAspectRatio="xMidYMid repeat" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="opacity:0.18">
+      <defs>
+        <pattern id="diag" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+          <line x1="0" y1="40" x2="40" y2="0" stroke="#2b4a6b" stroke-width="0.6"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#diag)"/>
+    </svg>
+    <div class="hero-content">
+      <div class="hero-eyebrow" lang-content="hu">Bemutatkozás</div>
+      <div class="hero-eyebrow" lang-content="en">Pen Portrait</div>
+      <h1 class="hero-name">Derényi<br>András</h1>
+      <div class="hero-divider"></div>
+
+      <div class="hero-bio" lang-content="hu">
+        <p>Derényi András (1966) bölcsész diplomával rendelkező független oktatáskutató, -fejlesztő szakember, három évtizedes fejlesztői, kutatói, tanácsadói, oktatói tapasztalattal különösen a felsőoktatás és az egész életen át tartó tanulás területén.</p>
+        <p>Dolgozott tudományos munkatársként az egykori Oktatáskutató és Fejlesztő Intézetben, oktatóként a Pécsi Tudományegyetemen, az Eötvös Loránd Tudományegyetemen, adminisztratív vezetőként a PTE Bölcsészettudományi Kara, illetve a Professzorok Háza Országos Kredittanácsa élén. Fejlesztői, tanácsadói és elemzői tevékenységet egyéni és céges keretek között végez nemcsak Magyarországon, hanem nemzetközi színtéren is.</p>
+        <p>Alapító tagja a BCE nemzetközi Felsőoktatási Kutatások Központjának, a Magyar Nevelés- és Oktatáskutatók Egyesületének (HUCER) és a Magyar Kommunikációtudományi Társaságnak. Tagja az Európai Képesítési Keretrendszer Tanácsadó Testületének és az oktatási szakértők európai hálózatának.</p>
+        <p>Szabadidejét olvasással, sportolással (vitorlázás, síelés, túrázás), utazással szereti tölteni. Három gyermek (2002, 2003, 2008) apja.</p>
+      </div>
+
+      <div class="hero-bio" lang-content="en">
+        <p>András Derényi (1966) is an independent educationalist with a degree in humanities and three decades of experience as a researcher, development expert, consultant and lecturer in the field of higher education and lifelong learning.</p>
+        <p>He has worked as a research fellow at the former Institute for Educational Research and Development, as a lecturer at the University of Pécs and at Eötvös Loránd University, as an administrative head of the Faculty of Arts and Humanities in the University of Pécs and as head of the National Credit Council in the House of Professors in Budapest. He is active as a developer and consultant on individual basis and corporate contexts not only in Hungary but also internationally.</p>
+        <p>He is a founding member of the BCE International Centre for Higher Education Research, the Hungarian Educational Research Association (HERA) and the Hungarian Society for Communication Studies; and member of the Advisory Group of the European Qualifications Framework as well as the Network of Experts on Education.</p>
+        <p>In his free time he enjoys reading, sports (sailing, skiing, hiking) and travelling. He is the father of three children (2002, 2003, 2008).</p>
+      </div>
+    </div>
+  </div> <!-- end hero -->
+
+  <!-- EXPERT WORKS -->
+  <section id="szakmai">
+    <div class="section-header">
+      <span class="section-label" lang-content="hu">02</span>
+      <span class="section-label" lang-content="en">02</span>
+      <h2 class="section-title" lang-content="hu">Szakmai tevékenység</h2>
+      <h2 class="section-title" lang-content="en">Expert Works</h2>
+    </div>
+    <div class="two-col">
+      <div lang-content="hu">
+        <p>Irányított kiemelt fejlesztési projekteket, részt vesz ad hoc és állandó szakmai és tanácsadó testületek munkájában, továbbképzéseket, műhelymunkákat vezet, gyakori előadója konferenciáknak, szakmai programoknak.</p>
+        <p>Érdeklődési területe a (felső)oktatási stratégiai tervezés és implementáció, a tanulás és tanítás minőségének javítása, az ezeket szolgáló eszközök (pl. tanulási eredmények, képesítési keretrendszerek és standardok, kreditrendszer) fejlesztése, alkalmazása, valamint a nemzetköziesítés.</p>
+      </div>
+      <div lang-content="en">
+        <p>He has led priority development projects, attended ad hoc and permanent professional and advisory boards, is a frequent speaker at conferences and professional programmes, and conducts training courses and workshops.</p>
+        <p>His interest fields cover strategic planning and implementation in (higher) education, improving the quality of learning and teaching, the development and application of tools for this purpose (such as learning outcomes, qualifications frameworks and standards, credit schemes), and internationalisation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTNERS -->
+  <section id="partnerek">
+    <div class="section-header">
+      <span class="section-label">03</span>
+      <h2 class="section-title" lang-content="hu">Partnerek</h2>
+      <h2 class="section-title" lang-content="en">Partners</h2>
+    </div>
+    <ul class="partners-list">
+      <li lang-content="hu">Magyar és nemzetközi felsőoktatási intézmények, kutatóközpontok és minisztériumok, amelyekkel fejlesztési és tanácsadói együttműködésben dolgozik.</li>
+      <li lang-content="en">Hungarian and international higher education institutions, research centres and ministries with whom he collaborates on development and advisory projects.</li>
+      <li lang-content="hu">Európai Bizottság, Europass, EQF és egyéb uniós oktatáspolitikai testületek és hálózatok.</li>
+      <li lang-content="en">European Commission bodies, Europass, EQF and other EU education policy networks and advisory groups.</li>
+      <li lang-content="hu">Vállalati és civil szervezetek, amelyek felsőoktatással kapcsolatos stratégiájuk kialakításában igénylik tanácsadói közreműködését.</li>
+      <li lang-content="en">Corporate and civil society organisations seeking advisory support in shaping their higher education strategies.</li>
+    </ul>
+  </section>
+
+  <!-- FURTHER ACTIVITIES -->
+  <section id="egyeb">
+    <div class="section-header">
+      <span class="section-label">04</span>
+      <h2 class="section-title" lang-content="hu">Egyéb tevékenységek</h2>
+      <h2 class="section-title" lang-content="en">Further Activities</h2>
+    </div>
+    <div class="two-col">
+      <div lang-content="hu">
+        <p>Rendszeres résztvevője és előadója hazai és nemzetközi konferenciáknak, szemináriumoknak a felsőoktatás, a képesítési keretrendszerek és az életen át tartó tanulás témaköreiben. Számos tanulmány, fejezet és szakpolitikai dokumentum szerzője és társszerzője.</p>
+        <p>Oktatóként és trénerként workshopokat vezet szakmai közönségnek: tanulási eredmények alkalmazása, kreditrendszerek, minőségbiztosítás és intézményfejlesztés témákban.</p>
+      </div>
+      <div lang-content="en">
+        <p>He is a regular participant and speaker at national and international conferences and seminars on higher education, qualifications frameworks and lifelong learning. He is the author and co-author of numerous studies, book chapters and policy documents.</p>
+        <p>As a trainer and facilitator, he runs workshops for professional audiences on the application of learning outcomes, credit systems, quality assurance and institutional development.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <div class="contact-section" id="kapcsolat">
+    <div class="section-header">
+      <span class="section-label">05</span>
+      <h2 class="section-title" lang-content="hu">Kapcsolat</h2>
+      <h2 class="section-title" lang-content="en">Contact</h2>
+    </div>
+    <div class="contact-details">
+      <a class="contact-item" href="mailto:andras@derenyi.net">
+        andras@derenyi.net
+      </a>
+      <span class="contact-dot"></span>
+      <a class="contact-item" href="tel:+36209312010">
+        +36 20 931 2010
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  © Derényi András · derenyi.net
+</footer>
+
+<script>
+  function setLang(lang) {
+    document.body.classList.remove('lang-hu', 'lang-en');
+    document.body.classList.add('lang-' + lang);
+    document.getElementById('btn-hu').classList.toggle('active', lang === 'hu');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.documentElement.lang = lang;
+  }
+  // Init
+  setLang('hu');
+</script>
+</body>
+</html>
