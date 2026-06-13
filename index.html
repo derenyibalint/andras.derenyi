@@ -22,6 +22,10 @@
   }
 
   html { scroll-behavior: smooth; }
+  /* offset for fixed header (48px lang bar + 48px nav + a little breathing room) */
+  #bemutatkozas, #szakmai, #partnerek, #egyeb, #kapcsolat {
+    scroll-margin-top: 110px;
+  }
 
   body {
     font-family: var(--sans);
@@ -281,8 +285,6 @@
 
   /* ── LANG CONTENT ── */
   [lang-content] { display: none; }
-  body.lang-hu [lang-content="hu"] { display: block; }
-  body.lang-en [lang-content="en"] { display: block; }
 
   /* ── FOOTER ── */
   footer {
@@ -461,13 +463,24 @@
 
 <script>
   function setLang(lang) {
-    document.body.classList.remove('lang-hu', 'lang-en');
-    document.body.classList.add('lang-' + lang);
+    document.querySelectorAll('[lang-content]').forEach(el => {
+      el.style.display = 'none';
+    });
+    document.querySelectorAll('[lang-content="' + lang + '"]').forEach(el => {
+      const tag = el.tagName.toLowerCase();
+      const cls = el.className || '';
+      if (cls.includes('nav-hu') || cls.includes('nav-en')) {
+        el.style.display = 'flex';
+      } else if (['span', 'a', 'em', 'strong'].includes(tag)) {
+        el.style.display = 'inline';
+      } else {
+        el.style.display = 'block';
+      }
+    });
     document.getElementById('btn-hu').classList.toggle('active', lang === 'hu');
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
     document.documentElement.lang = lang;
   }
-  // Init
   setLang('hu');
 </script>
 </body>
